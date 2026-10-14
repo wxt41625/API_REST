@@ -2,7 +2,6 @@ from flask import Flask, jsonify
 
 app = Flask(__name__)
 
-# Inventario de materiales de instalación de redes (datos de ejemplo)
 materiales = [
     {"id": 1, "nombre": "Cable UTP Cat6 (bobina)", "categoria": "cable",
      "unidad": "metros", "existencias": 120, "stock_minimo": 100},
@@ -40,12 +39,9 @@ def listar_materiales():
     return jsonify({"total": len(materiales), "materiales": materiales})
 
 
-# IMPORTANTE: esta ruta fija se define antes de /materiales/<int:id>.
-# Flask distingue por tipo (<int:id> solo acepta números), así que no choca.
 @app.route("/materiales/bajo-stock")
 def materiales_bajo_stock():
-    # La condición se calcula con los datos de cada registro:
-    # existencias <= stock_minimo
+
     bajos = [m for m in materiales if m["existencias"] <= m["stock_minimo"]]
     return jsonify({"total": len(bajos), "materiales": bajos})
 
